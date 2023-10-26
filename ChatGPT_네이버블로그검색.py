@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from openpyxl import Workbook
 
-search_keyword='아이폰14'
+search_keyword='맥북에어'
 
 url = f'https://search.naver.com/search.naver?where=view&sm=tab_jum&query={search_keyword}'
 
@@ -22,12 +22,13 @@ ws.append(["블로그명", "블로그주소", "글 제목", "포스팅 날짜"])
 for page in range(1, 101):
     url = f'https://search.naver.com/search.naver?where=view&sm=tab_jum&query={search_keyword}&start={page * 10 - 9}'
 
-    posts = soup.find_all('li', {'class':'bx _svp_item'})
+    posts = soup.find_all('span', {'class':'sub'})
     for post in posts:
         #<span class="elss etc_dsc_inner">
         #<a href="https://blog.naver.com/hongganz" class="sub_txt sub_name">이웃삼촌이 들려주는 IT 이야기</a>
         blog_name_elem = post.find('span', {'class':'elss etc_dsc_inner'})
         blog_name = blog_name_elem.text 
+        
         try:
             blog_address_elem = blog_name_elem.find("a", 
                 attrs={"class":"sub_txt sub_name"}) 
